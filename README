@@ -39,3 +39,114 @@
 
 	解决办法：-fcombine-regs是一个过时的参数，删掉；-mstring-insns是一个linus自己修改编译器添加的参数，我们的编译器没有，也删掉。
 
+2.5:
+gcc  -Wall -O -fstrength-reduce -fomit-frame-pointer \
+-nostdinc -Iinclude -c -o init/main.o init/main.c
+In file included from init/main.c:8:0:
+include/unistd.h:207:1: warning: function return types not compatible due to ‘volatile’
+ volatile void exit(int status);
+ ^
+include/unistd.h:207:1: warning: function return types not compatible due to ‘volatile’
+include/unistd.h:208:1: warning: function return types not compatible due to ‘volatile’
+ volatile void _exit(int status);
+ ^
+include/unistd.h:208:1: warning: function return types not compatible due to ‘volatile’
+init/main.c:23:29: error: static declaration of ‘fork’ follows non-static declaration
+ static inline _syscall0(int,fork)
+                             ^
+include/unistd.h:134:6: note: in definition of macro ‘_syscall0’
+ type name(void) \
+      ^
+include/unistd.h:210:5: note: previous declaration of ‘fork’ was here
+ int fork(void);
+     ^
+init/main.c:24:29: error: static declaration of ‘pause’ follows non-static declaration
+ static inline _syscall0(int,pause)
+                             ^
+include/unistd.h:134:6: note: in definition of macro ‘_syscall0’
+ type name(void) \
+      ^
+include/unistd.h:224:5: note: previous declaration of ‘pause’ was here
+ int pause(void);
+     ^
+init/main.c:26:29: error: static declaration of ‘sync’ follows non-static declaration
+ static inline _syscall0(int,sync)
+                             ^
+include/unistd.h:134:6: note: in definition of macro ‘_syscall0’
+ type name(void) \
+      ^
+include/unistd.h:235:5: note: previous declaration of ‘sync’ was here
+ int sync(void);
+     ^
+init/main.c:104:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void)  /* This really IS void, no error here. */
+      ^
+init/main.c: In function ‘init’:
+init/main.c:182:4: warning: function with qualified void return type called
+    _exit(1);
+    ^
+init/main.c:184:3: warning: function with qualified void return type called
+   _exit(2);
+   ^
+init/main.c:200:4: warning: function with qualified void return type called
+    _exit(execve("/bin/sh",argv,envp));
+    ^
+init/main.c:208:2: warning: function with qualified void return type called
+  _exit(0); /* NOTE! _exit, not exit() */
+  ^
+Makefile:35: recipe for target 'init/main.o' failed
+make: *** [init/main.o] Error 1
+
+	解决办法：将init/main.c中的static去掉
+2.6
+(cd kernel; make)
+make[1]: Entering directory '/home/hsp/kernel_source/linux-0.11-learning/kernel'
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -I../include \
+-c -o fork.o fork.c
+In file included from fork.c:16:0:
+../include/linux/kernel.h:5:1: warning: function return types not compatible due to ‘volatile’
+ volatile void panic(const char * str);
+ ^
+../include/linux/kernel.h:5:1: warning: function return types not compatible due to ‘volatile’
+../include/linux/kernel.h:5:1: warning: function return types not compatible due to ‘volatile’
+fork.c: In function ‘copy_process’:
+fork.c:121:3: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+   if (f=p->filp[i])
+   ^
+In file included from fork.c:15:0:
+fork.c: In function ‘copy_mem’:
+../include/linux/sched.h:189:1: error: ‘asm’ operand has impossible constraints
+ __asm__("movw %%dx,%0\n\t" \
+ ^
+../include/linux/sched.h:211:28: note: in expansion of macro ‘_set_base’
+ #define set_base(ldt,base) _set_base( ((char *)&(ldt)) , base )
+                            ^
+fork.c:54:2: note: in expansion of macro ‘set_base’
+  set_base(p->ldt[1],new_code_base);
+  ^
+../include/linux/sched.h:189:1: error: ‘asm’ operand has impossible constraints
+ __asm__("movw %%dx,%0\n\t" \
+ ^
+../include/linux/sched.h:211:28: note: in expansion of macro ‘_set_base’
+ #define set_base(ldt,base) _set_base( ((char *)&(ldt)) , base )
+                            ^
+fork.c:55:2: note: in expansion of macro ‘set_base’
+  set_base(p->ldt[2],new_data_base);
+  ^
+Makefile:24: recipe for target 'fork.o' failed
+make[1]: *** [fork.o] Error 1
+make[1]: Leaving directory '/home/hsp/kernel_source/linux-0.11-learning/kernel'
+Makefile:72: recipe for target 'kernel/kernel.o' failed
+make: *** [kernel/kernel.o] Error 2
+	解决办法：将__asm__中关于寄存器的声明全部去掉
+2.7:
+(cd kernel; make)
+make[1]: Entering directory '/home/hsp/kernel_source/linux-0.11-learning/kernel'
+gld -r -o kernel.o sched.o system_call.o traps.o asm.o fork.o panic.o printk.o vsprintf.o sys.o exit.o signal.o mktime.o
+make[1]: gld: Command not found
+Makefile:32: recipe for target 'kernel.o' failed
+make[1]: *** [kernel.o] Error 127
+make[1]: Leaving directory '/home/hsp/kernel_source/linux-0.11-learning/kernel'
+Makefile:72: recipe for target 'kernel/kernel.o' failed
+make: *** [kernel/kernel.o] Error 2
+	解决办法：将gld改成ld,gld是老的称呼，现在已经改成了ld

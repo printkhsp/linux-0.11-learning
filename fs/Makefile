@@ -1,7 +1,7 @@
 AR	=gar
 AS	=as
 CC	=gcc
-LD	=gld
+LD	=ld
 CFLAGS	=-Wall -O -fstrength-reduce  -fomit-frame-pointer \
 	-nostdinc -I../include
 CPP	=gcc -E -nostdinc -I../include
