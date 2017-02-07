@@ -2,3 +2,40 @@
 1、编译环境
 	Linux printkhsp-pc 3.16.0-4-686-pae #1 SMP Debian 3.16.7-ckt25-2 (2016-04-08) i686 GNU/Linux
 
+2、编译错误
+2.1:
+	as86 -0 -a -o boot/bootsect.o boot/bootsect.s
+	make: as86: Command not found
+	Makefile:89: recipe for target 'boot/bootsect' failed
+	make: *** [boot/bootsect] Error 127
+
+	解决办法：apt-get install bin86
+2.2:
+	gas -c -o boot/head.o boot/head.s
+	make: gas: Command not found
+	Makefile:34: recipe for target 'boot/head.o' failed
+	make: *** [boot/head.o] Error 127
+	
+	解决办法：将gas改成as，gas是过去的称呼，现在已经改成了as
+2.3:
+	as -c -o boot/head.o boot/head.s
+	boot/head.s: Assembler messages:
+	boot/head.s:231: Error: alignment not a power of 2
+	Makefile:34: recipe for target 'boot/head.o' failed
+	make: *** [boot/head.o] Error 1
+
+	解决办法:.align 2 是汇编语言指示符，其含义是指存储边界对齐调整;
+	“2”表示把随后的代码或数据的偏移位置调整到地址值最后2比特位为零的位置（2^2），即按4字节对齐内存地址。
+	不过现在GNU as直接是写出对齐的值而非2的次方值了。
+	.align 2 应该改为 .align 4
+	.align 3 应该改为 .align 8
+2.4:
+	gcc  -Wall -O -fstrength-reduce -fomit-frame-pointer -fcombine-regs -mstring-insns \
+	     -nostdinc -Iinclude -c -o init/main.o init/main.c
+	     gcc: error: unrecognized command line option ‘-fcombine-regs’
+	     gcc: error: unrecognized command line option ‘-mstring-insns’
+	     Makefile:36: recipe for target 'init/main.o' failed
+	     make: *** [init/main.o] Error 1
+
+	解决办法：-fcombine-regs是一个过时的参数，删掉；-mstring-insns是一个linus自己修改编译器添加的参数，我们的编译器没有，也删掉。
+
