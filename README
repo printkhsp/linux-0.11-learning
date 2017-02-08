@@ -290,3 +290,456 @@ make[1]: Leaving directory '/home/hsp/kernel_source/linux-0.11-learning/lib'
 Makefile:81: recipe for target 'lib/lib.a' failed
 make: *** [lib/lib.a] Error 2
 	解决办法：将A=B=C拆开即可
+
+2.13
+ld -s -x -M boot/head.o init/main.o \
+kernel/kernel.o mm/mm.o fs/fs.o \
+kernel/blk_drv/blk_drv.a kernel/chr_drv/chr_drv.a \
+kernel/math/math.a \
+lib/lib.a \
+-o tools/system > System.map
+ld: warning: cannot find entry symbol _start; defaulting to 0000000008048098
+boot/head.o: In function `startup_32':
+(.text+0x10): undefined reference to `_stack_start'
+boot/head.o: In function `startup_32':
+(.text+0x2e): undefined reference to `_stack_start'
+boot/head.o: In function `after_page_tables':
+(.text+0x540c): undefined reference to `_main'
+boot/head.o: In function `ignore_int':
+(.text+0x5440): undefined reference to `_printk'
+kernel/kernel.o: In function `schedule':
+(.text+0x247): undefined reference to `_current'
+kernel/kernel.o: In function `schedule':
+(.text+0x254): undefined reference to `_current'
+kernel/kernel.o: In function `schedule':
+(.text+0x25e): undefined reference to `_last_task_used_math'
+kernel/kernel.o: In function `sched_init':
+(.text+0x61f): undefined reference to `gdt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x627): undefined reference to `gdt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x62f): undefined reference to `gdt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x635): undefined reference to `gdt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x63c): undefined reference to `gdt'
+kernel/kernel.o:(.text+0x643): more undefined references to `gdt' follow
+kernel/kernel.o: In function `sched_init':
+(.text+0x6e9): undefined reference to `timer_interrupt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x6f5): undefined reference to `idt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x6fb): undefined reference to `idt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x715): undefined reference to `system_call'
+kernel/kernel.o: In function `sched_init':
+(.text+0x721): undefined reference to `idt'
+kernel/kernel.o: In function `sched_init':
+(.text+0x727): undefined reference to `idt'
+kernel/kernel.o: In function `_system_call':
+(.text+0x75f): undefined reference to `_sys_call_table'
+kernel/kernel.o: In function `_system_call':
+(.text+0x765): undefined reference to `_current'
+kernel/kernel.o: In function `ret_from_sys_call':
+system_call.o:(.text+0x775): undefined reference to `_current'
+system_call.o:(.text+0x77b): undefined reference to `_task'
+system_call.o:(.text+0x7ac): undefined reference to `_do_signal'
+kernel/kernel.o: In function `_device_not_available':
+(.text+0x811): undefined reference to `_math_emulate'
+kernel/kernel.o: In function `_timer_interrupt':
+(.text+0x836): undefined reference to `_jiffies'
+kernel/kernel.o: In function `_timer_interrupt':
+(.text+0x847): undefined reference to `_do_timer'
+kernel/kernel.o: In function `_sys_execve':
+(.text+0x85a): undefined reference to `_do_execve'
+kernel/kernel.o: In function `_sys_fork':
+(.text+0x865): undefined reference to `_find_empty_process'
+kernel/kernel.o: In function `_sys_fork':
+(.text+0x874): undefined reference to `_copy_process'
+kernel/kernel.o: In function `_hd_interrupt':
+(.text+0x89f): undefined reference to `_do_hd'
+kernel/kernel.o: In function `_hd_interrupt':
+(.text+0x8a8): undefined reference to `_unexpected_hd_interrupt'
+kernel/kernel.o: In function `_floppy_interrupt':
+(.text+0x8d7): undefined reference to `_do_floppy'
+kernel/kernel.o: In function `_floppy_interrupt':
+(.text+0x8e0): undefined reference to `_unexpected_floppy_interrupt'
+kernel/kernel.o: In function `reschedule':
+system_call.o:(.text+0x73a): undefined reference to `_schedule'
+kernel/kernel.o: In function `_coprocessor_error':
+(.text+0x7da): undefined reference to `_math_error'
+kernel/kernel.o: In function `_device_not_available':
+(.text+0x809): undefined reference to `_math_state_restore'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc55): undefined reference to `divide_error'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc61): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc67): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc6c): undefined reference to `debug'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc78): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc7e): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc83): undefined reference to `nmi'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc8f): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc95): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xc9a): undefined reference to `int3'
+kernel/kernel.o: In function `trap_init':
+(.text+0xca6): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcac): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcb1): undefined reference to `overflow'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcbd): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcc3): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcc8): undefined reference to `bounds'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcd4): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcda): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcdf): undefined reference to `invalid_op'
+kernel/kernel.o: In function `trap_init':
+(.text+0xceb): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcf1): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xcf6): undefined reference to `device_not_available'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd02): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd08): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd0d): undefined reference to `double_fault'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd19): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd1f): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd24): undefined reference to `coprocessor_segment_overrun'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd30): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd36): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd3b): undefined reference to `invalid_TSS'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd47): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd4d): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd52): undefined reference to `segment_not_present'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd5e): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd64): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd69): undefined reference to `stack_segment'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd75): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd7b): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd80): undefined reference to `general_protection'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd8c): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd92): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xd97): undefined reference to `page_fault'
+kernel/kernel.o: In function `trap_init':
+(.text+0xda3): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xda9): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdae): undefined reference to `reserved'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdba): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdc0): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdc5): undefined reference to `coprocessor_error'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdd1): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xdd7): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xddc): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xde1): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xde6): undefined reference to `reserved'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe03): undefined reference to `irq13'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe0f): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe15): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe40): undefined reference to `parallel_interrupt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe4c): undefined reference to `idt'
+kernel/kernel.o: In function `trap_init':
+(.text+0xe52): undefined reference to `idt'
+kernel/kernel.o: In function `_divide_error':
+(.text+0xe59): undefined reference to `_do_divide_error'
+kernel/kernel.o: In function `_debug':
+(.text+0xe8e): undefined reference to `_do_int3'
+kernel/kernel.o: In function `_nmi':
+(.text+0xe95): undefined reference to `_do_nmi'
+kernel/kernel.o: In function `_int3':
+(.text+0xe9c): undefined reference to `_do_int3'
+kernel/kernel.o: In function `_overflow':
+(.text+0xea3): undefined reference to `_do_overflow'
+kernel/kernel.o: In function `_bounds':
+(.text+0xeaa): undefined reference to `_do_bounds'
+kernel/kernel.o: In function `_invalid_op':
+(.text+0xeb1): undefined reference to `_do_invalid_op'
+kernel/kernel.o: In function `_coprocessor_segment_overrun':
+(.text+0xeb8): undefined reference to `_do_coprocessor_segment_overrun'
+kernel/kernel.o: In function `_reserved':
+(.text+0xebf): undefined reference to `_do_reserved'
+kernel/kernel.o: In function `_double_fault':
+(.text+0xedb): undefined reference to `_do_double_fault'
+kernel/kernel.o: In function `_invalid_TSS':
+(.text+0xf12): undefined reference to `_do_invalid_TSS'
+kernel/kernel.o: In function `_segment_not_present':
+(.text+0xf19): undefined reference to `_do_segment_not_present'
+kernel/kernel.o: In function `_stack_segment':
+(.text+0xf20): undefined reference to `_do_stack_segment'
+kernel/kernel.o: In function `_general_protection':
+(.text+0xf27): undefined reference to `_do_general_protection'
+kernel/kernel.o: In function `copy_process':
+(.text+0x1286): undefined reference to `gdt'
+kernel/kernel.o: In function `copy_process':
+(.text+0x1290): undefined reference to `gdt'
+kernel/kernel.o: In function `copy_process':
+(.text+0x129a): undefined reference to `gdt'
+kernel/kernel.o: In function `copy_process':
+(.text+0x12a1): undefined reference to `gdt'
+kernel/kernel.o: In function `copy_process':
+(.text+0x12a9): undefined reference to `gdt'
+kernel/kernel.o:(.text+0x12b1): more undefined references to `gdt' follow
+kernel/kernel.o: In function `printk':
+(.text+0x13ee): undefined reference to `_buf'
+kernel/kernel.o: In function `printk':
+(.text+0x13f5): undefined reference to `_tty_write'
+kernel/kernel.o:(.data+0x484): undefined reference to `pg_dir'
+kernel/kernel.o:(.data+0x1188): undefined reference to `sys_fork'
+kernel/kernel.o:(.data+0x11ac): undefined reference to `sys_execve'
+mm/mm.o: In function `calc_mem':
+(.text+0x791): undefined reference to `pg_dir'
+mm/mm.o: In function `_page_fault':
+(.text+0x801): undefined reference to `_do_no_page'
+mm/mm.o: In function `_page_fault':
+(.text+0x808): undefined reference to `_do_wp_page'
+fs/fs.o: In function `sys_utime':
+(.text+0x3d): undefined reference to `get_fs_long'
+fs/fs.o: In function `sys_utime':
+(.text+0x54): undefined reference to `get_fs_long'
+fs/fs.o: In function `block_write':
+(.text+0x3086): undefined reference to `get_fs_byte'
+fs/fs.o: In function `block_read':
+(.text+0x31ba): undefined reference to `put_fs_byte'
+fs/fs.o: In function `rw_port':
+char_dev.c:(.text+0x32c1): undefined reference to `put_fs_byte'
+char_dev.c:(.text+0x32da): undefined reference to `get_fs_byte'
+fs/fs.o: In function `file_read':
+(.text+0x352e): undefined reference to `put_fs_byte'
+fs/fs.o: In function `file_read':
+(.text+0x3569): undefined reference to `put_fs_byte'
+fs/fs.o: In function `file_write':
+(.text+0x3709): undefined reference to `get_fs_byte'
+fs/fs.o: In function `cp_stat':
+stat.c:(.text+0x3888): undefined reference to `put_fs_byte'
+fs/fs.o: In function `create_tables':
+exec.c:(.text+0x39a6): undefined reference to `put_fs_long'
+exec.c:(.text+0x39bf): undefined reference to `put_fs_long'
+exec.c:(.text+0x39d8): undefined reference to `put_fs_long'
+exec.c:(.text+0x39f6): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a0e): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3a32): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a50): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a68): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3a8c): undefined reference to `put_fs_long'
+fs/fs.o: In function `count':
+exec.c:(.text+0x3acc): undefined reference to `get_fs_long'
+fs/fs.o: In function `copy_strings':
+exec.c:(.text+0x3afd): undefined reference to `get_ds'
+exec.c:(.text+0x3b06): undefined reference to `get_fs'
+exec.c:(.text+0x3b1d): undefined reference to `set_fs'
+exec.c:(.text+0x3b38): undefined reference to `set_fs'
+exec.c:(.text+0x3b55): undefined reference to `get_fs_long'
+exec.c:(.text+0x3b86): undefined reference to `set_fs'
+exec.c:(.text+0x3baa): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3bf5): undefined reference to `set_fs'
+exec.c:(.text+0x3c70): undefined reference to `set_fs'
+exec.c:(.text+0x3c8a): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3cc0): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x442b): undefined reference to `get_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4437): undefined reference to `get_ds'
+fs/fs.o: In function `do_execve':
+(.text+0x4440): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4475): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4498): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x48d9): undefined reference to `put_fs_byte'
+fs/fs.o: In function `read_pipe':
+(.text+0x4aa5): undefined reference to `put_fs_byte'
+fs/fs.o: In function `write_pipe':
+(.text+0x4c37): undefined reference to `get_fs_byte'
+fs/fs.o: In function `sys_pipe':
+(.text+0x4e58): undefined reference to `put_fs_long'
+fs/fs.o: In function `sys_pipe':
+(.text+0x4e70): undefined reference to `put_fs_long'
+fs/fs.o: In function `find_entry':
+namei.c:(.text+0x4fe3): undefined reference to `get_fs_byte'
+namei.c:(.text+0x4ffe): undefined reference to `get_fs_byte'
+fs/fs.o: In function `add_entry':
+namei.c:(.text+0x53c8): undefined reference to `get_fs_byte'
+fs/fs.o: In function `get_dir':
+namei.c:(.text+0x548d): undefined reference to `get_fs_byte'
+namei.c:(.text+0x5553): undefined reference to `get_fs_byte'
+fs/fs.o:namei.c:(.text+0x566d): more undefined references to `get_fs_byte' follow
+kernel/blk_drv/blk_drv.a(floppy.o): In function `setup_DMA':
+floppy.c:(.text+0x22): undefined reference to `tmp_floppy_area'
+floppy.c:(.text+0x2e): undefined reference to `tmp_floppy_area'
+kernel/blk_drv/blk_drv.a(floppy.o): In function `rw_interrupt':
+floppy.c:(.text+0xa36): undefined reference to `tmp_floppy_area'
+kernel/blk_drv/blk_drv.a(floppy.o): In function `floppy_init':
+floppy.c:(.text+0xc5f): undefined reference to `floppy_interrupt'
+floppy.c:(.text+0xc6b): undefined reference to `idt'
+floppy.c:(.text+0xc71): undefined reference to `idt'
+kernel/blk_drv/blk_drv.a(hd.o): In function `hd_init':
+hd.c:(.text+0x9e1): undefined reference to `hd_interrupt'
+hd.c:(.text+0x9ed): undefined reference to `idt'
+hd.c:(.text+0x9f3): undefined reference to `idt'
+kernel/chr_drv/chr_drv.a(console.o): In function `scrup':
+console.c:(.text+0x8a): undefined reference to `_video_num_columns'
+console.c:(.text+0x149): undefined reference to `_video_num_columns'
+console.c:(.text+0x18c): undefined reference to `_video_num_columns'
+kernel/chr_drv/chr_drv.a(console.o): In function `scrdown':
+console.c:(.text+0x1e9): undefined reference to `_video_num_columns'
+console.c:(.text+0x233): undefined reference to `_video_num_columns'
+kernel/chr_drv/chr_drv.a(console.o): In function `con_write':
+console.c:(.text+0x387): undefined reference to `_attr'
+kernel/chr_drv/chr_drv.a(console.o): In function `con_init':
+console.c:(.text+0xf1d): undefined reference to `keyboard_interrupt'
+console.c:(.text+0xf29): undefined reference to `idt'
+console.c:(.text+0xf2f): undefined reference to `idt'
+kernel/chr_drv/chr_drv.a(serial.o): In function `rs_init':
+serial.c:(.text+0x50): undefined reference to `rs1_interrupt'
+serial.c:(.text+0x5c): undefined reference to `idt'
+serial.c:(.text+0x62): undefined reference to `idt'
+serial.c:(.text+0x67): undefined reference to `rs2_interrupt'
+serial.c:(.text+0x73): undefined reference to `idt'
+serial.c:(.text+0x79): undefined reference to `idt'
+Makefile:55: recipe for target 'tools/system' failed
+make: *** [tools/system] Error 
+	解决办法：将__idt的下划线去掉，以前的编译器将变量名下面加下划线
+2.18:
+ld -s -x -M boot/head.o init/main.o \
+kernel/kernel.o mm/mm.o fs/fs.o \
+kernel/blk_drv/blk_drv.a kernel/chr_drv/chr_drv.a \
+kernel/math/math.a \
+lib/lib.a \
+-o tools/system > System.map
+ld: warning: cannot find entry symbol _start; defaulting to 0000000008048098
+fs/fs.o: In function `block_write':
+(.text+0x309c): undefined reference to `get_fs_byte'
+fs/fs.o: In function `block_read':
+(.text+0x31d0): undefined reference to `put_fs_byte'
+fs/fs.o: In function `rw_port':
+char_dev.c:(.text+0x32d7): undefined reference to `put_fs_byte'
+char_dev.c:(.text+0x32f0): undefined reference to `get_fs_byte'
+fs/fs.o: In function `file_read':
+(.text+0x3544): undefined reference to `put_fs_byte'
+fs/fs.o: In function `file_read':
+(.text+0x357f): undefined reference to `put_fs_byte'
+fs/fs.o: In function `file_write':
+(.text+0x371f): undefined reference to `get_fs_byte'
+fs/fs.o: In function `cp_stat':
+stat.c:(.text+0x389e): undefined reference to `put_fs_byte'
+fs/fs.o: In function `create_tables':
+exec.c:(.text+0x39d2): undefined reference to `put_fs_long'
+exec.c:(.text+0x39eb): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a04): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a22): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a3a): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3a5e): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a7c): undefined reference to `put_fs_long'
+exec.c:(.text+0x3a94): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3ab8): undefined reference to `put_fs_long'
+fs/fs.o: In function `copy_strings':
+exec.c:(.text+0x3b26): undefined reference to `get_ds'
+exec.c:(.text+0x3b2f): undefined reference to `get_fs'
+exec.c:(.text+0x3b46): undefined reference to `set_fs'
+exec.c:(.text+0x3b61): undefined reference to `set_fs'
+exec.c:(.text+0x3baf): undefined reference to `set_fs'
+exec.c:(.text+0x3bd3): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3c1e): undefined reference to `set_fs'
+exec.c:(.text+0x3c99): undefined reference to `set_fs'
+exec.c:(.text+0x3cb3): undefined reference to `get_fs_byte'
+exec.c:(.text+0x3ce9): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4454): undefined reference to `get_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4460): undefined reference to `get_ds'
+fs/fs.o: In function `do_execve':
+(.text+0x4469): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x449e): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x44c1): undefined reference to `set_fs'
+fs/fs.o: In function `do_execve':
+(.text+0x4902): undefined reference to `put_fs_byte'
+fs/fs.o: In function `read_pipe':
+(.text+0x4ace): undefined reference to `put_fs_byte'
+fs/fs.o: In function `write_pipe':
+(.text+0x4c60): undefined reference to `get_fs_byte'
+fs/fs.o: In function `sys_pipe':
+(.text+0x4e81): undefined reference to `put_fs_long'
+fs/fs.o: In function `sys_pipe':
+(.text+0x4e99): undefined reference to `put_fs_long'
+fs/fs.o: In function `find_entry':
+namei.c:(.text+0x500c): undefined reference to `get_fs_byte'
+namei.c:(.text+0x5027): undefined reference to `get_fs_byte'
+fs/fs.o: In function `add_entry':
+namei.c:(.text+0x53f1): undefined reference to `get_fs_byte'
+fs/fs.o: In function `get_dir':
+namei.c:(.text+0x54b6): undefined reference to `get_fs_byte'
+namei.c:(.text+0x557c): undefined reference to `get_fs_byte'
+fs/fs.o:namei.c:(.text+0x5696): more undefined references to `get_fs_byte' follow
+Makefile:55: recipe for target 'tools/system' failed
+make: *** [tools/system] Error 1
+	解决办法：将extern改成static
+2.19:
+gcc  -Wall -O -fstrength-reduce -fomit-frame-pointer \
+-o tools/build tools/build.c
+tools/build.c: In function ‘main’:
+tools/build.c:72:4: warning: implicit declaration of function ‘MAJOR’ [-Wimplicit-function-declaration]
+    major_root = MAJOR(sb.st_rdev);
+    ^
+tools/build.c:73:4: warning: implicit declaration of function ‘MINOR’ [-Wimplicit-function-declaration]
+    minor_root = MINOR(sb.st_rdev);
+    ^
+/tmp/ccGB3Pg8.o: In function `main':
+build.c:(.text+0xd0): undefined reference to `MAJOR'
+build.c:(.text+0xec): undefined reference to `MINOR'
+collect2: error: ld returned 1 exit status
+Makefile:48: recipe for target 'tools/build' failed
+make: *** [tools/build] Error 1
+	解决办法：
