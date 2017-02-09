@@ -742,4 +742,30 @@ build.c:(.text+0xec): undefined reference to `MINOR'
 collect2: error: ld returned 1 exit status
 Makefile:48: recipe for target 'tools/build' failed
 make: *** [tools/build] Error 1
-	解决办法：
+	解决办法：将在include/linux/fs.h中MAJOR和MINOR的声明移动到build.c文件中,因为include <linux/fs.h>用到的是编译系统的include库，并不是linux-0.11目录中的include库。
+2.20:
+make[1]: Leaving directory '/home/hsp/kernel_source/linux-0.11-learning/lib'
+ld -s -x -M boot/head.o init/main.o \
+kernel/kernel.o mm/mm.o fs/fs.o \
+kernel/blk_drv/blk_drv.a kernel/chr_drv/chr_drv.a \
+kernel/math/math.a \
+lib/lib.a \
+-o tools/system > System.map
+ld: warning: cannot find entry symbol _start; defaulting to 0000000008048098
+gcc  -Wall -O -fstrength-reduce -fomit-frame-pointer \
+-o tools/build tools/build.c
+tools/build boot/bootsect boot/setup tools/system /dev/hd6 > Image
+/dev/hd6: No such file or directory
+Couldn't stat root device.
+Makefile:41: recipe for target 'Image' failed
+make: *** [Image] Error 1
+	解决办法：因为在/dev/目录中，没有hd6设备，因此修改Makefile文件，将ROOT_DEV=/dev/hd6 改成ROOT_DEV=
+2.21:
+tools/build boot/bootsect boot/setup tools/system  > Image
+Root device is (3, 6)
+Boot sector 512 bytes.
+Setup is 312 bytes.
+Non-GCC header of 'system'
+Makefile:41: recipe for target 'Image' failed
+make: *** [Image] Error 1
+	解决办法：将tool/build.c文件中的160和161行注释掉
