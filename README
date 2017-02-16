@@ -6,5 +6,7 @@
 	tools/build boot/bootsect boot/setup tools/kernel $(ROOT_DEV) > Image
 	rm tools/kernel -f
 	sync
-
+3、系统在head.s中的lss _stack_start %esp中出现BUG，bochs中报error：print_guard_result:guard_found?<stop reason 0>:
+	解决办法：在Makefile中的LD中添加选项-Ttext 0指定数据段的起始地址，详细参见man ld。如果不指定起始地址从0开始，则stack_start的偏移地址已经超出了16M的地址空间，而bochs中的内存最大也只有16M
+	同时为了消除掉编译时出现的找不到_start警告，可以在LD中添加-e startup_32,并且在head.s中添加.global startup_32
 
