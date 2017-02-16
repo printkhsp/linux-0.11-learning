@@ -1,4 +1,10 @@
 这是一个调试说明文档
 1、setup.s源码中的jumpi 0, 8语句在bochs中运行时的虚拟地址0x9020:0x104处
+2、setup.s的jumpi 0,8跳转后不能正确跳转到head.s的开头处：
+	解决办法:将tool/build.c中的158和159两行注释掉，将Makefile中的40行的Image改成
+	objcopy -O binary -R .note -R .comment tools/system tools/kernel
+	tools/build boot/bootsect boot/setup tools/kernel $(ROOT_DEV) > Image
+	rm tools/kernel -f
+	sync
 
 
